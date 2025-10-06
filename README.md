@@ -85,7 +85,7 @@ Estas herramientas muestran enfoques distintos, pero ninguna aborda completament
 | Módulo | Tecnología / Herramienta |
 |:--------|:--------------------------|
 | Aplicación móvil | Kotlin + Jetpack Compose |
-| API REST (backend) | Kotlin Ktor | Firebase |
+| API REST (backend) | Firebase + Kotlin Ktor | 
 | Almacenamiento | AWS S3 |
 | Base de datos | PostgreSQL / Supabase |
 | Autenticación | JWT / Firebase Auth |
