@@ -4,12 +4,18 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import com.google.common.truth.Truth
 import com.juliorubio.inku.ui.theme.InkuTheme
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.LooperMode
 import java.util.concurrent.atomic.AtomicBoolean
 
+@RunWith(RobolectricTestRunner::class)
+@Config(sdk = [34])
+@LooperMode(LooperMode.Mode.PAUSED)
 class LoginScreenTest {
 
     @get:Rule
@@ -17,46 +23,38 @@ class LoginScreenTest {
 
     @Test
     fun loginScreen_showsBasicElements_andButtonsWork() {
-        val signInClicked = AtomicBoolean(false)
-        val signUpClicked = AtomicBoolean(false)
-        val forgotClicked = AtomicBoolean(false)
-        val googleClicked = AtomicBoolean(false)
-        val githubClicked = AtomicBoolean(false)
+        val signIn = AtomicBoolean(false)
+        val signUp = AtomicBoolean(false)
+        val forgot = AtomicBoolean(false)
+        val google = AtomicBoolean(false)
+        val github = AtomicBoolean(false)
 
         compose.setContent {
             InkuTheme(darkTheme = true) {
                 LoginScreen(
-                    onSignIn = { signInClicked.set(true) },
-                    onGotoRegister = { signUpClicked.set(true) },
-                    onForgot = { forgotClicked.set(true) },
-                    onGoogle = { googleClicked.set(true) },
-                    onGithub = { githubClicked.set(true) }
+                    onSignIn = { signIn.set(true) },
+                    onGotoRegister = { signUp.set(true) },
+                    onForgot = { forgot.set(true) },
+                    onGoogle = { google.set(true) },
+                    onGithub = { github.set(true) }
                 )
             }
         }
 
-        // Verifica título y campos visibles
+        // Interacciones
         compose.onNodeWithText("Inku").assertIsDisplayed()
-        compose.onNodeWithText("Email").assertExists()
-        compose.onNodeWithText("Password").assertExists()
-        compose.onNodeWithText("Sign In").assertIsDisplayed()
-
-        // Click en "Sign In"
+        compose.onNodeWithText("Email").assertIsDisplayed()
+        compose.onNodeWithText("Password").assertIsDisplayed()
         compose.onNodeWithText("Sign In").performClick()
-        Truth.assertThat(signInClicked.get()).isTrue()
-
-        // Click en "Forgot password?"
         compose.onNodeWithText("Forgot password?").performClick()
-        Truth.assertThat(forgotClicked.get()).isTrue()
-
-        // Botones sociales
         compose.onNodeWithText("Google").performClick()
         compose.onNodeWithText("GitHub").performClick()
-        Truth.assertThat(googleClicked.get()).isTrue()
-        Truth.assertThat(githubClicked.get()).isTrue()
-
-        // Enlace "Sign up"
         compose.onNodeWithText("Sign up").performClick()
-        Truth.assertThat(signUpClicked.get()).isTrue()
+
+        assert(signIn.get())
+        assert(forgot.get())
+        assert(google.get())
+        assert(github.get())
+        assert(signUp.get())
     }
 }
