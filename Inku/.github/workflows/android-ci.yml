@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: Inku/Inku   # <- raíz donde está tu gradlew (ajústalo si es Inku/Inku)
+        working-directory: Inku  # <- raíz donde está tu gradlew (ajústalo si es Inku/Inku)
 
     steps:
       - name: Checkout
@@ -27,7 +27,7 @@ jobs:
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
         with:
-          build-root-directory: Inku/Inku  # <- igual al working-directory
+          build-root-directory: Inku  # <- igual al working-directory
 
       - name: Make gradlew executable
         run: chmod +x gradlew
