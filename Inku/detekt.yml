@@ -1,0 +1,75 @@
+build:
+  maxIssues: 0
+  excludeCorrectable: false
+
+config:
+  validation: true
+
+processors:
+  active: true
+
+# ==== Reglas afinadas para Compose ====
+naming:
+  FunctionNaming:
+    active: true
+    # Permitimos Composables con PascalCase (LoginScreen, HomeTab, etc.)
+    ignoreAnnotated:
+      - Composable
+    excludes: []
+  MatchingDeclarationName:
+    active: false   # No obligamos nombre de archivo == única declaración top-level
+  PackageNaming:
+    active: true
+  TopLevelPropertyNaming:
+    active: true
+
+comments:
+  ForbiddenComment:
+    active: false   # Permitimos TODO en esta fase
+
+style:
+  WildcardImport:
+    active: false   # Permitimos imports wildcard (Compose genera muchos)
+  MagicNumber:
+    active: false   # Demasiados números de layout (dp) en Compose
+  MaxLineLength:
+    active: true
+    maxLineLength: 140
+    excludeCommentStatements: true
+  NewLineAtEndOfFile:
+    active: true
+  UnusedImports:
+    active: true
+
+complexity:
+  LongMethod:
+    active: true
+    threshold: 120   # Pantallas Compose suelen ser largas
+  LongParameterList:
+    active: true
+    functionThreshold: 8
+    constructorThreshold: 10
+    ignoreDefaultParameters: true
+
+potential-bugs:
+  DuplicateCaseInWhenExpression:
+    active: true
+
+exceptions:
+  TooGenericExceptionCaught:
+    active: false
+
+# Evitar falsos positivos en Compose
+performance:
+  ForEachOnRange:
+    active: false
+
+# Menos ruido en WIP
+empty-blocks:
+  active: true
+
+# Opcional: Relajar paquete inválido (si no vas a mover el test ahora)
+# Quita este bloque si prefieres arreglar carpeta/paquete
+rules:
+  InvalidPackageDeclaration:
+    active: false

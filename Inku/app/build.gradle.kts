@@ -101,8 +101,9 @@ dependencies {
 detekt {
     buildUponDefaultConfig = true
     allRules = false
-    // Si no tienes detekt.yml, detekt usa su default
-    // config = files("$rootDir/detekt.yml")
+    config = files("$rootDir/detekt.yml")   // <--- usa el archivo que acabas de crear
+    // Si quisieras pasar aunque haya issues:
+    // ignoreFailures = true
 }
 
 ktlint {
