@@ -103,3 +103,22 @@ Estas herramientas muestran enfoques distintos, pero ninguna aborda completament
 
 > “Inku” viene de *ink* (tinta) + pronunciación japonesa.  
 > Representa la unión entre **tradición (manga clásico)** y **tecnología moderna**.
+
+
+## ✅ Estado del CI
+![Android CI](https://github.com/Juliorubiodev/Inku/actions/workflows/android-ci.yml/badge.svg)
+
+## 🧰 Decisiones (rúbrica)
+
+- **Gestor de tareas (1.5 pt):** Gradle (nativo Android), con tareas `ktlint`, `detekt`, `test`, `assembleDebug`.
+- **Biblioteca de aserciones (1.5 pt):** JUnit por simplicidad y compatibilidad.
+- **Marco de pruebas (1.5 pt):** JUnit
+- **Integración continua (4 pt):** GitHub Actions con cache de Gradle, análisis estático, tests y build; publica el APK como artefacto.
+- **Tests de lógica (1.5 pt):** `SelectionUtilTest` valida la alternancia de selección usada por la UI (chips), ejecuta en CI y pasa.
+
+### Cómo ejecutar (local)
+```bash
+./gradlew clean
+./gradlew :app:ktlintFormat :app:ktlintCheck :app:detekt --continue
+./gradlew :app:test
+./gradlew :app:assembleDebug
