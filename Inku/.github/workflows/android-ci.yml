@@ -5,10 +5,14 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
+  workflow_dispatch: {}
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Inku/Inku   # <- raíz donde está tu gradlew (ajústalo si es Inku/Inku)
 
     steps:
       - name: Checkout
@@ -22,6 +26,8 @@ jobs:
 
       - name: Gradle cache
         uses: gradle/actions/setup-gradle@v3
+        with:
+          build-root-directory: Inku/Inku  # <- igual al working-directory
 
       - name: Make gradlew executable
         run: chmod +x gradlew
@@ -30,15 +36,16 @@ jobs:
         run: ./gradlew --version
 
       - name: Lint & Static Analysis
-        run: ./gradlew ktlintCheck detekt
+        run: ./gradlew :app:ktlintCheck :app:detekt
 
-      - name: Unit Tests (JUnit 5)
-        run: ./gradlew test
+      - name: Unit Tests (Compose + Robolectric)
+        run: ./gradlew :app:test
 
       - name: Assemble Debug
-        run: ./gradlew assembleDebug
+        run: ./gradlew :app:assembleDebug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: app-debug-apk
+          path: Inku/app/build/outputs/apk/debug/*.apk
