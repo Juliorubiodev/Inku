@@ -1,0 +1,21 @@
+# entorno
+.env
+.env.*.local
+*.pyc
+__pycache__/
+.venv/
+venv/
+
+# secretos
+secrets/
+*.pem
+*.key
+*.json
+
+# pytest / coverage
+.pytest_cache/
+.coverage*
+htmlcov/
+
+printf "\n# Env & secrets\n.env\nbackend/.env\nsecrets/\n*.pem\n*.key\n*.p12\n*.json\n" >> .gitignore
+
