@@ -21,8 +21,8 @@ fun ProfileTab(modifier: Modifier = Modifier) {
 
         Surface(tonalElevation = 2.dp, modifier = Modifier.fillMaxWidth(), shape = MaterialTheme.shapes.large) {
             Column(Modifier.padding(16.dp)) {
-                Text("Your Name", style = MaterialTheme.typography.titleLarge)
-                Text("@yourname", color = MaterialTheme.colorScheme.onSurface)
+                Text("Zakarias Piedras Del Rio", style = MaterialTheme.typography.titleLarge)
+                Text("@zackisgay", color = MaterialTheme.colorScheme.onSurface)
                 Spacer(Modifier.height(12.dp))
                 // Works/Favorites tabs mock
                 Text("Works", style = MaterialTheme.typography.titleLarge)
