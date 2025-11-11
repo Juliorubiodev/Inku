@@ -42,25 +42,33 @@ Excelente testabilidad con TestClient.
 Estructura del proyecto
 
 backend/
-
-    └── src/
-    └── inku_api/
-        ├── main.py                  # create_app(), montaje de routers y logging
-        ├── config.py                # Settings pydantic-settings (aliases y .env)
-        ├── logging_conf.py          # Config de logging
-        ├── domain.py                # Modelos de dominio (Manga, Episode)
-        ├── services/
-        │   └── manga_services.py    # Lógica de negocio (MangaService)
-        ├── adapters/
-        │   ├── repo_firebase.py     # FirestoreMangaRepo (producción)
-        │   └── s3_presign.py        # Boto3S3Presign (producción)
-        └── routers/
-            ├── health.py            # /health
-            └── mangas.py            # /mangas y subrutas
+├── requirements.txt
+├── .env.sample                 
+├── .gitignore
+├── captures/                   # (Opcional) capturas de pantalla para la doc
+├── .github/
+│   └── workflows/
+│       └── backend-ci.yml      # CI: instala deps y ejecuta tests
+└── src/
+    ├── inku_api/
+    │   ├── __init__.py
+    │   ├── main.py             # create_app(), montaje de routers y logging
+    │   ├── config.py           # Settings con pydantic-settings (aliases y .env)
+    │   ├── logging_conf.py     # Configuración de logging (loguru + stdlib)
+    │   ├── domain.py           # Modelos de dominio
+    │   ├── services/
+    │   │   └── manga_services.py   
+    │   ├── adapters/
+    │   │   ├── repo_firebase.py    # FirestoreMangaRepo
+    │   │   └── s3_presign.py       # Boto3S3Presign
+    │   └── routers/
+    │       ├── health.py           
+    │       └── mangas.py           
     └── test/
-        ├── conftest.py              # TestClient y monkeypatch de dependencias
-        ├── test_health.py           # Test /api/health
-        └── test_mangas_api.py       # Test /api/mangas (listado)
+        ├── conftest.py             # TestClient
+        ├── test_health.py          # Test /api/health
+        └── test_mangas_api.py      # Test /api/mangas
+
 
 
 
