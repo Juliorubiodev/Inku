@@ -131,7 +131,14 @@ Los routers usan un get_service()
 
 **Probado:**
 
-**Revisar la captura de pantalla**
+**Adjunto las capturas de pantalla**
+  ![alt text](captures/testPASSGithub.png) 
+  ![alt text](captures/BuildAndroidCI.png) 
+  ![alt text](captures/logsh3.png)
+  ![alt text](captures/endp1.png)
+  ![alt text](captures/endp2.png)
+  ![alt text](captures/endp3.png)
+
 
 ### Ejecución local
 
