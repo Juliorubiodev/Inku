@@ -1,0 +1,125 @@
+name: Build & Publish Docker Images
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    # Se ejecuta si hay cambios en cualquiera de las carpetas de los servicios
+    paths:
+      - 'backend/manga-service/**'
+      - 'backend/auth-service/**'
+      - '.github/workflows/publish-images.yml' # También si cambias este archivo
+
+env:
+  REGISTRY: ghcr.io
+  # Usamos el nombre del repositorio como base
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  # JOB 1: Detectar cambios
+  # Este trabajo revisa qué archivos cambiaron para decidir qué construir
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      manga: ${{ steps.filter.outputs.manga }}
+      auth: ${{ steps.filter.outputs.auth }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: dorny/paths-filter@v3
+      id: filter
+      with:
+        filters: |
+          manga:
+            - 'backend/manga-service/**'
+          auth:
+            - 'backend/auth-service/**'
+
+  # JOB 2: Construir Manga Service
+  # Solo se ejecuta si el Job 'changes' detectó cambios en 'manga'
+  build-manga:
+    needs: changes
+    if: ${{ needs.changes.outputs.manga == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Paso para convertir el nombre del repo a minúsculas (Requerido por Docker)
+      - name: Lowercase repo name
+        run: |
+          echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Nombre final: ghcr.io/usuario/repo-manga-service
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}-manga-service
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/manga-service
+          file: ./backend/manga-service/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # JOB 3: Construir Auth Service
+  # Solo se ejecuta si el Job 'changes' detectó cambios en 'auth'
+  build-auth:
+    needs: changes
+    if: ${{ needs.changes.outputs.auth == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase repo name
+        run: |
+          echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Nombre final: ghcr.io/usuario/repo-auth-service
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}-auth-service
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/auth-service
+          file: ./backend/auth-service/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
