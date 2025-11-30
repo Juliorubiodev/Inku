@@ -18,3 +18,4 @@ def create_app() -> FastAPI:
 
 # 👇 IMPORTANTE: expone 'app' a uvicorn
 app = create_app()
+     
