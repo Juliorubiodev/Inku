@@ -1,0 +1,51 @@
+name: Manga Service Tests
+
+on:
+  push:
+    branches: [ "main", "master" ]
+    # FILTRO IMPORTANTE:
+    # Solo ejecuta este workflow si cambian archivos dentro de este microservicio
+    paths:
+      - 'backend/manga-service/**'
+  pull_request:
+    branches: [ "main", "master" ]
+    paths:
+      - 'backend/manga-service/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    # Definimos el directorio de trabajo por defecto para algunos pasos
+    defaults:
+      run:
+        working-directory: ./backend/manga-service
+
+    steps:
+    - name: Checkout del código
+      uses: actions/checkout@v4
+
+    - name: Configurar Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Ajusta a la versión que uses (3.10, 3.11, 3.12)
+        cache: 'pip' # Habilita caché para que las siguientes ejecuciones sean rápidas
+
+    - name: Instalar dependencias
+      # Asumimos que requirements.txt está en backend/manga-service/
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        # Si tienes dependencias de test separadas (ej. pytest, coverage), instálalas aquí
+        # pip install pytest 
+
+    - name: Ejecutar Tests
+      # CAMBIO CRÍTICO DE DIRECTORIO:
+      # Entramos a 'src' porque ahí es donde vive 'inku_api' y 'test'
+      working-directory: ./backend/manga-service/src
+      run: |
+        # Agregamos el directorio actual al PYTHONPATH para evitar errores de importación
+        export PYTHONPATH=$PYTHONPATH:.
+        
+        # Ejecutamos el test
+        python -m unittest discover test

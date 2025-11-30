@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  manga-service:
+    build:
+      context: ./manga-service
+      dockerfile: Dockerfile
+    container_name: manga-service
+    env_file:
+      - ./manga-service/.env
+    environment:
+      PYTHONPATH: /src
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+    ports:
+      - "8001:8000"
+    restart: always
+  auth-service:
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+    container_name: auth-service
+    env_file:
+      - ./auth-service/.env
+    ports:
+      - "8003:8000"
+    restart: always
+
+

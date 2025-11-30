@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./manga-service/src/test/test_firestore_"
+    ]
+}
