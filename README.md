@@ -122,3 +122,8 @@ Estas herramientas muestran enfoques distintos, pero ninguna aborda completament
 ./gradlew :app:ktlintFormat :app:ktlintCheck :app:detekt --continue
 ./gradlew :app:test
 ./gradlew :app:assembleDebug
+```
+
+
+
+
