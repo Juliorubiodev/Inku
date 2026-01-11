@@ -1,0 +1,26 @@
+# ---- Base image ----
+FROM python:3.11-bookworm
+
+# ---- Environment ----
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app/manga-service/src:/app/shared
+
+# ---- Working directory ----
+WORKDIR /app
+
+# ---- Copy and install dependencies ----
+COPY manga-service/requirements.txt ./manga-service/
+RUN pip install --upgrade pip && pip install -r manga-service/requirements.txt
+
+# ---- Copy shared module ----
+COPY shared/ ./shared/
+
+# ---- Copy manga-service ----
+COPY manga-service/ ./manga-service/
+
+# ---- Expose port ----
+EXPOSE 8000
+
+# ---- Start FastAPI ----
+CMD ["python", "-m", "uvicorn", "inku_api.main:app", "--app-dir", "/app/manga-service/src", "--host", "0.0.0.0", "--port", "8000"]
