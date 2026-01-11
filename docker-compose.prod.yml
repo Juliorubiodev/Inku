@@ -1,0 +1,140 @@
+version: "3.9"
+
+# =============================================================================
+# Inku Production-Like Deployment
+# =============================================================================
+# Run with: docker compose -f docker-compose.prod.yml up --build
+# Access at: http://localhost
+# =============================================================================
+
+services:
+  # -------------------------------------------------------------------------
+  # Nginx Reverse Proxy (Entry Point)
+  # -------------------------------------------------------------------------
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: inku-nginx
+    ports:
+      - "80:80"
+    volumes:
+      # Mount frontend build output
+      - frontend-dist:/usr/share/nginx/html:ro
+    depends_on:
+      frontend:
+        condition: service_completed_successfully
+      manga-service:
+        condition: service_healthy
+      auth-service:
+        condition: service_healthy
+      list-service:
+        condition: service_healthy
+    networks:
+      - inku-network
+    restart: always
+
+  # -------------------------------------------------------------------------
+  # Frontend (Build only - outputs to volume)
+  # -------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    container_name: inku-frontend-builder
+    volumes:
+      - frontend-dist:/app/dist
+    command: ["sh", "-c", "cp -r /usr/share/nginx/html/* /app/dist/"]
+    networks:
+      - inku-network
+
+  # -------------------------------------------------------------------------
+  # Manga Service API
+  # -------------------------------------------------------------------------
+  manga-service:
+    build:
+      context: ./backend/manga-service
+      dockerfile: Dockerfile
+    container_name: inku-manga-service
+    env_file:
+      - ./backend/manga-service/.env
+    environment:
+      PYTHONPATH: /app/src:/packages
+      FIREBASE_SERVICE_ACCOUNT_FILE: /secrets/firebase-service-account.json
+      CORS_ORIGINS: "http://localhost"
+    volumes:
+      - ./backend/secrets:/secrets:ro
+      - ./backend/shared:/packages/shared:ro
+    networks:
+      - inku-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # -------------------------------------------------------------------------
+  # Auth Service API
+  # -------------------------------------------------------------------------
+  auth-service:
+    build:
+      context: ./backend/auth-service
+      dockerfile: Dockerfile
+    container_name: inku-auth-service
+    env_file:
+      - ./backend/auth-service/.env
+    environment:
+      PYTHONPATH: /app:/packages
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+      CORS_ORIGINS: "http://localhost"
+    volumes:
+      - ./backend/secrets:/secrets:ro
+      - ./backend/shared:/packages/shared:ro
+    networks:
+      - inku-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  # -------------------------------------------------------------------------
+  # List Service API
+  # -------------------------------------------------------------------------
+  list-service:
+    build:
+      context: ./backend/list-service
+      dockerfile: Dockerfile
+    container_name: inku-list-service
+    env_file:
+      - ./backend/list-service/.env
+    environment:
+      PYTHONPATH: /app/src:/packages
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+      CORS_ORIGINS: "http://localhost"
+    volumes:
+      - ./backend/secrets:/secrets:ro
+      - ./backend/shared:/packages/shared:ro
+    networks:
+      - inku-network
+    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+# =============================================================================
+# Networks & Volumes
+# =============================================================================
+networks:
+  inku-network:
+    driver: bridge
+
+volumes:
+  frontend-dist:

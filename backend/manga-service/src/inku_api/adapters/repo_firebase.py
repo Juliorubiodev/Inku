@@ -29,6 +29,37 @@ class FirestoreMangaRepo(MangaRepository):
     def manga_exists(self, manga_id: str) -> bool:
         return self._db.collection("mangas").document(manga_id).get().exists
 
+    def get_manga(self, manga_id: str) -> Optional[Manga]:
+        """Get a single manga by ID."""
+        doc = self._db.collection("mangas").document(manga_id).get()
+        if not doc.exists:
+            return None
+        data = doc.to_dict() or {}
+        return Manga(
+            id=doc.id,
+            title=data.get("title", "") or "",
+            description=data.get("description", "") or "",
+            cover_path=data.get("cover_path", "") or "",
+            recommended=data.get("recommended"),
+            tags=data.get("tags"),
+        )
+
+    def create_manga(self, manga: Manga) -> Manga:
+        """Create a new manga in Firestore."""
+        doc_ref = self._db.collection("mangas").document(manga.id)
+        if doc_ref.get().exists:
+            raise ValueError(f"Manga with id '{manga.id}' already exists")
+        
+        doc_ref.set({
+            "title": manga.title,
+            "description": manga.description,
+            "cover_path": manga.cover_path,
+            "recommended": manga.recommended,
+            "tags": manga.tags,
+        })
+        logger.info(f"Created manga {manga.id}")
+        return manga
+
     def list_chapters(self, manga_id: str) -> Iterable[Chapter]:
         col = self._db.collection("mangas").document(manga_id).collection("chapters")
 
@@ -101,3 +132,23 @@ class FirestoreMangaRepo(MangaRepository):
 
     def get_episode_by_number(self, manga_id: str, number: int) -> Optional[Chapter]:
         return self.get_chapter_by_number(manga_id, number)
+
+    def create_chapter(self, chapter: Chapter) -> Chapter:
+        """Create a new chapter in Firestore."""
+        doc_ref = (
+            self._db.collection("mangas")
+            .document(chapter.manga_id)
+            .collection("chapters")
+            .document(chapter.id)
+        )
+        doc_ref.set({
+            "manga_id": chapter.manga_id,
+            "number": chapter.number,
+            "title": chapter.title,
+            "pdf_path": chapter.pdf_path,
+            "thumb_path": chapter.thumb_path,
+            "status": "pending_review",  # User uploads need review
+        })
+        logger.info(f"Created chapter {chapter.id} for manga {chapter.manga_id}")
+        return chapter
+

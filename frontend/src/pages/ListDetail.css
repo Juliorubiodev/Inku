@@ -1,0 +1,343 @@
+.list-detail-page {
+    padding: 1rem 0;
+}
+
+.list-header {
+    margin-bottom: 2rem;
+}
+
+.btn-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Added centering */
+    gap: 0.4rem;
+    color: rgba(255, 255, 255, 0.6);
+    background: rgba(255, 255, 255, 0.05);
+    /* Added visible background */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.85rem;
+    /* Smaller font */
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+    padding: 0.35rem 0.8rem;
+    /* Much smaller padding */
+    font-weight: 500;
+    border-radius: 99px;
+    /* Pill shape */
+    width: fit-content;
+    line-height: normal;
+    /* Fix line-height */
+}
+
+.btn-back:hover {
+    color: #fff;
+    background: #e94560;
+    /* Solid red on hover */
+    border-color: #e94560;
+    transform: translateX(-3px);
+    box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
+}
+
+.list-title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.list-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex: 1;
+    min-width: 200px;
+    /* Fix for clipped descenders */
+    padding-bottom: 0.2rem;
+    line-height: 1.2;
+}
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+}
+
+.btn-edit:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.edit-name {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-name input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.edit-name button {
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #e94560;
+    color: #fff;
+    cursor: pointer;
+}
+
+.edit-name button:last-child {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.list-meta {
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: 0.5rem;
+}
+
+.no-items {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 3rem;
+}
+
+.list-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+}
+
+.list-item:hover {
+    border-color: #e94560;
+}
+
+.list-item-link {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.item-cover {
+    width: 60px;
+    height: 80px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #2a2a4a, #1a1a2e);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-size: 1.5rem;
+}
+
+.item-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.item-info h3 {
+    margin: 0 0 0.5rem;
+}
+
+.item-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-remove {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin: 0 1rem 0 0.5rem;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    font-size: 0.95rem;
+    /* Slightly smaller for better proportions */
+    line-height: 1;
+    /* Ensures perfect vertical centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-remove:hover {
+    color: #fff;
+    background: #e94560;
+    border-color: #e94560;
+    box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
+}
+
+/* List actions container */
+.list-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.btn-add-manga {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: none;
+    background: #e94560;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-add-manga:hover {
+    background: #ff6b6b;
+    transform: translateY(-1px);
+}
+
+/* ... */
+
+.btn-edit {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centering text */
+    gap: 0.5rem;
+}
+
+/* ... */
+
+.btn-delete-list {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(233, 69, 96, 0.5);
+    background: rgba(233, 69, 96, 0.15);
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Centering text */
+    gap: 0.5rem;
+}
+
+.btn-delete-list:hover {
+    background: #e94560;
+    color: #fff;
+    border-color: #e94560;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(233, 69, 96, 0.3);
+}
+
+/* Toast notification */
+.toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0.875rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    z-index: 1100;
+    animation: slideUp 0.3s ease;
+}
+
+.toast-success {
+    background: rgba(34, 197, 94, 0.9);
+    color: #fff;
+}
+
+.toast-error {
+    background: rgba(233, 69, 96, 0.9);
+    color: #fff;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .list-title {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .list-title h1 {
+        font-size: 1.5rem;
+        min-width: auto;
+    }
+
+    .edit-name {
+        flex-wrap: wrap;
+    }
+
+    .edit-name input {
+        min-width: 150px;
+    }
+
+    .list-item {
+        flex-direction: column;
+    }
+
+    .btn-remove {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        width: 100%;
+        text-align: center;
+    }
+
+    .list-actions {
+        width: 100%;
+    }
+
+    .btn-add-manga {
+        flex: 1;
+    }
+}

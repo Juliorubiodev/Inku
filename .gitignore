@@ -32,3 +32,17 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Backend Secrets and Environment
+backend/secrets/
+backend/**/.env
+!backend/**/.env.example
+!backend/**/.env.sample
+**/serviceAccountKey.json
+**/firebase-service-account.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/

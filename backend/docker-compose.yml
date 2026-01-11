@@ -1,5 +1,9 @@
 version: "3.9"
 
+# Common environment variables
+x-common-env: &common-env
+  CORS_ORIGINS: "http://localhost:3000,http://localhost:5173"
+
 services:
   manga-service:
     build:
@@ -9,11 +13,22 @@ services:
     env_file:
       - ./manga-service/.env
     environment:
-      PYTHONPATH: /src
-      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+      <<: *common-env
+      PYTHONPATH: /app/src:/packages
+      FIREBASE_SERVICE_ACCOUNT_FILE: /secrets/firebase-service-account.json
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
     ports:
       - "8001:8000"
     restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/api/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
   auth-service:
     build:
       context: ./auth-service
@@ -21,8 +36,43 @@ services:
     container_name: auth-service
     env_file:
       - ./auth-service/.env
+    environment:
+      <<: *common-env
+      PYTHONPATH: /app:/packages
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
     ports:
       - "8003:8000"
     restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
 
-
+  list-service:
+    build:
+      context: ./list-service
+      dockerfile: Dockerfile
+    container_name: list-service
+    env_file:
+      - ./list-service/.env
+    environment:
+      <<: *common-env
+      PYTHONPATH: /app/src:/packages
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
+    ports:
+      - "8002:8000"
+    restart: always
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8000/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s

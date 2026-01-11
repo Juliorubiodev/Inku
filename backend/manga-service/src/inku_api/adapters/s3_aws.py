@@ -19,10 +19,46 @@ class Boto3S3Presign:
             "S3 presign listo (bucket=%s, region=%s)", self._bucket, settings.aws_region
         )
 
-    def presign_get(self, key: str, expires: int = None) -> str:
+    def presign_get(self, key: str, expires: int = None, content_type: str = None, inline: bool = True) -> str:
+        """Generate presigned URL for downloading (GET).
+        
+        Args:
+            key: S3 object key
+            expires: URL expiration in seconds
+            content_type: Force response content type (e.g., 'application/pdf')
+            inline: If True, force inline display (not download)
+        """
         exp = expires or settings.s3_presign_expires_seconds
+        
+        params = {"Bucket": self._bucket, "Key": key}
+        
+        # Force content type for PDF files
+        if content_type:
+            params["ResponseContentType"] = content_type
+        elif key.endswith(".pdf"):
+            params["ResponseContentType"] = "application/pdf"
+        
+        # Force inline display
+        if inline:
+            filename = key.split("/")[-1]
+            params["ResponseContentDisposition"] = f"inline; filename=\"{filename}\""
+        
         return self._s3.generate_presigned_url(
             ClientMethod="get_object",
-            Params={"Bucket": self._bucket, "Key": key},
+            Params=params,
             ExpiresIn=exp,
         )
+
+    def presign_put(self, key: str, content_type: str = "application/pdf", expires: int = None) -> str:
+        """Generate presigned URL for uploading (PUT)."""
+        exp = expires or settings.s3_presign_expires_seconds
+        return self._s3.generate_presigned_url(
+            ClientMethod="put_object",
+            Params={
+                "Bucket": self._bucket,
+                "Key": key,
+                "ContentType": content_type,
+            },
+            ExpiresIn=exp,
+        )
+
