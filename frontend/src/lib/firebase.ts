@@ -86,7 +86,7 @@ export const updateUserProfile = async (displayName: string) => {
 
 export const getIdToken = async (forceRefresh = false): Promise<string | null> => {
     if (!auth?.currentUser) return null;
-    return auth.currentUser.getIdToken(true); // Temporarily forcing refresh to fix regression
+    return auth.currentUser.getIdToken(forceRefresh);
 };
 
 export { onAuthStateChanged, type User };

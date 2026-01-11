@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { listService } from '../lib/api';
 import { useAuth } from '../context/AuthContext';
 import ConfirmModal from '../components/ConfirmModal';
-import type { ListSummary, UserList } from '../types';
+import type { ListSummary } from '../types';
 import './Lists.css';
 
 const MyLists: React.FC = () => {

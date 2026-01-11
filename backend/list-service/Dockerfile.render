@@ -1,0 +1,26 @@
+# ---- Base image ----
+FROM python:3.11-slim
+
+# ---- Environment ----
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app/list-service/src:/app/shared
+
+# ---- Working directory ----
+WORKDIR /app
+
+# ---- Copy and install dependencies ----
+COPY list-service/requirements.txt ./list-service/
+RUN pip install --upgrade pip && pip install -r list-service/requirements.txt
+
+# ---- Copy shared module ----
+COPY shared/ ./shared/
+
+# ---- Copy list-service ----
+COPY list-service/ ./list-service/
+
+# ---- Expose port ----
+EXPOSE 8000
+
+# ---- Start FastAPI ----
+CMD ["python", "-m", "uvicorn", "list_service.main:app", "--app-dir", "/app/list-service/src", "--host", "0.0.0.0", "--port", "8000"]
