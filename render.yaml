@@ -1,6 +1,3 @@
-# Render Blueprint Configuration
-# Deploy with: https://render.com/deploy?repo=https://github.com/YOUR_USER/Inku
-
 services:
   # =========================================================================
   # Manga Service API
@@ -37,7 +34,6 @@ services:
     runtime: docker
     dockerfilePath: ./backend/auth-service/Dockerfile.render
     dockerContext: ./backend
-    region: frankfurt
     plan: free
     healthCheckPath: /health
     envVars:
@@ -58,7 +54,6 @@ services:
     runtime: docker
     dockerfilePath: ./backend/list-service/Dockerfile.render
     dockerContext: ./backend
-    region: frankfurt
     plan: free
     healthCheckPath: /health
     envVars:
