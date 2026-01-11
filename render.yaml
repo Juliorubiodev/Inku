@@ -75,7 +75,6 @@ services:
     runtime: static
     buildCommand: cd frontend && npm ci && npm run build
     staticPublishPath: ./frontend/dist
-    region: frankfurt
     routes:
       - type: rewrite
         source: /*
