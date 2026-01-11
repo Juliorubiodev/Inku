@@ -14,10 +14,11 @@ services:
       - ./manga-service/.env
     environment:
       <<: *common-env
-      PYTHONPATH: /src
+      PYTHONPATH: /app/src:/packages
       FIREBASE_SERVICE_ACCOUNT_FILE: /secrets/firebase-service-account.json
     volumes:
       - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
     ports:
       - "8001:8000"
     restart: always
@@ -37,9 +38,11 @@ services:
       - ./auth-service/.env
     environment:
       <<: *common-env
+      PYTHONPATH: /app:/packages
       FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
     volumes:
       - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
     ports:
       - "8003:8000"
     restart: always
@@ -59,6 +62,11 @@ services:
       - ./list-service/.env
     environment:
       <<: *common-env
+      PYTHONPATH: /app/src:/packages
+      FIREBASE_SERVICE_ACCOUNT_PATH: /secrets/firebase-service-account.json
+    volumes:
+      - ./secrets:/secrets:ro
+      - ./shared:/packages/shared:ro
     ports:
       - "8002:8000"
     restart: always

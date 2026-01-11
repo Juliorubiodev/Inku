@@ -33,10 +33,32 @@ class Boto3S3Presign:
             settings.aws_region,
         )
 
-    def presign(self, key: str) -> str:
-        """Devuelve una URL firmada temporal (GET) para el objeto `key`."""
+    def presign(self, key: str, expires: int = None, content_type: str = None, inline: bool = True) -> str:
+        """Devuelve una URL firmada temporal (GET) para el objeto `key`.
+        
+        Args:
+            key: S3 object key
+            expires: URL expiration in seconds (uses default if not specified)
+            content_type: Force response content type (e.g., 'application/pdf')
+            inline: If True, force inline display (not download)
+        """
+        exp = expires or self._expires
+        
+        params = {"Bucket": self._bucket, "Key": key}
+        
+        # Force content type for PDF files
+        if content_type:
+            params["ResponseContentType"] = content_type
+        elif key.endswith(".pdf"):
+            params["ResponseContentType"] = "application/pdf"
+        
+        # Force inline display
+        if inline:
+            filename = key.split("/")[-1]
+            params["ResponseContentDisposition"] = f"inline; filename=\"{filename}\""
+        
         return self._client.generate_presigned_url(
             "get_object",
-            Params={"Bucket": self._bucket, "Key": key},
-            ExpiresIn=self._expires,
+            Params=params,
+            ExpiresIn=exp,
         )

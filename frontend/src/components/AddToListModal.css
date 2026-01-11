@@ -1,0 +1,50 @@
+.add-to-list-modal {
+    max-width: 450px;
+}
+
+.lists-select {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.list-select-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.list-select-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(233, 69, 96, 0.3);
+}
+
+.list-select-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.list-select-info h4 {
+    margin: 0 0 0.25rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.list-count {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.modal-hint {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.4);
+}

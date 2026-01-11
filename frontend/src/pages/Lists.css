@@ -1,0 +1,199 @@
+.lists-page {
+    padding: 1rem 0;
+}
+
+.lists-header {
+    margin-bottom: 2rem;
+}
+
+.lists-header h1 {
+    margin: 0 0 0.5rem;
+    font-size: 2rem;
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Fix for clipped descenders in gradient text */
+    padding-bottom: 0.2rem;
+    line-height: 1.2;
+}
+
+.lists-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.create-list-form {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.create-list-form input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    font-size: 1rem;
+}
+
+.create-list-form input:focus {
+    outline: none;
+    border-color: #e94560;
+}
+
+.create-list-form button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.create-list-form button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+}
+
+.create-list-form button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.no-lists {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 3rem;
+}
+
+.lists-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.list-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.2s;
+    display: flex;
+    align-items: stretch;
+}
+
+.list-card:hover {
+    transform: translateY(-3px);
+    border-color: #e94560;
+    box-shadow: 0 8px 25px rgba(233, 69, 96, 0.2);
+}
+
+.list-card.public {
+    text-decoration: none;
+    color: #fff;
+}
+
+.list-card-content {
+    flex: 1;
+    padding: 1.25rem;
+    text-decoration: none;
+    color: #fff;
+}
+
+.list-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+    line-height: 1.4;
+    /* Fix for clipped descenders */
+    padding-bottom: 2px;
+    transition: color 0.3s ease;
+}
+
+.list-card:hover h3 {
+    color: #e94560;
+}
+
+.list-count {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.875rem;
+}
+
+.btn-delete {
+    padding: 0 1rem;
+    background: transparent;
+    border: none;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    font-size: 1.25rem;
+    opacity: 0.5;
+    transition: all 0.2s;
+}
+
+.btn-delete:hover {
+    opacity: 1;
+    background: rgba(233, 69, 96, 0.2);
+}
+
+.auth-required {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.auth-required h2 {
+    color: #e94560;
+    margin-bottom: 1rem;
+}
+
+.auth-required p {
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 2rem;
+}
+
+.auth-required .btn-primary {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    color: #fff;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.list-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.pagination button {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.pagination button:hover:not(:disabled) {
+    border-color: #e94560;
+    background: rgba(233, 69, 96, 0.1);
+}
