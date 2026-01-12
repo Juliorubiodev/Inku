@@ -2,12 +2,13 @@ name: Build & Publish Docker Images
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
     # Se ejecuta si hay cambios en cualquiera de las carpetas de los servicios
     paths:
-      - 'backend/manga-service/**'
-      - 'backend/auth-service/**'
-      - '.github/workflows/publish-images.yml' # También si cambias este archivo
+      - "backend/manga-service/**"
+      - "backend/auth-service/**"
+      - "backend/list-service/**"
+      - ".github/workflows/publish-images.yml" # También si cambias este archivo
 
 env:
   REGISTRY: ghcr.io
@@ -24,16 +25,19 @@ jobs:
     outputs:
       manga: ${{ steps.filter.outputs.manga }}
       auth: ${{ steps.filter.outputs.auth }}
+      list: ${{ steps.filter.outputs.list }}
     steps:
-    - uses: actions/checkout@v4
-    - uses: dorny/paths-filter@v3
-      id: filter
-      with:
-        filters: |
-          manga:
-            - 'backend/manga-service/**'
-          auth:
-            - 'backend/auth-service/**'
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            manga:
+              - 'backend/manga-service/**'
+            auth:
+              - 'backend/auth-service/**'
+            list:
+              - 'backend/list-service/**'
 
   # JOB 2: Construir Manga Service
   # Solo se ejecuta si el Job 'changes' detectó cambios en 'manga'
@@ -120,6 +124,50 @@ jobs:
         with:
           context: ./backend/auth-service
           file: ./backend/auth-service/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  # JOB 4: Construir List Service
+  # Solo se ejecuta si el Job 'changes' detectó cambios en 'list'
+  build-list:
+    needs: changes
+    if: ${{ needs.changes.outputs.list == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lowercase repo name
+        run: |
+          echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Nombre final: ghcr.io/usuario/repo-list-service
+          images: ${{ env.REGISTRY }}/${{ env.REPO_LOWER }}-list-service
+          tags: |
+            type=raw,value=latest
+            type=sha,format=long
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend/list-service
+          file: ./backend/list-service/Dockerfile
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
