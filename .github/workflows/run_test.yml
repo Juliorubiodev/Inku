@@ -55,9 +55,6 @@ jobs:
 
   frontend-test:
     runs-on: ubuntu-latest
-    # Temporarily skip frontend tests due to jsdom ESM compatibility issue
-    # The app builds and deploys correctly, only the test runner has issues
-    if: false
     defaults:
       run:
         working-directory: ./frontend
