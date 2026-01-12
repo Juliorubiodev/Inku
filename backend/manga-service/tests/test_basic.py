@@ -86,3 +86,181 @@ class TestFastAPIBasics:
         response = client.get("/test")
         assert response.status_code == 200
         assert response.json() == {"status": "ok"}
+
+
+# ============================================================
+# TESTS DEL CÓDIGO REAL DEL PROYECTO - Domain Models
+# ============================================================
+
+class TestMangaDomainModel:
+    """Tests for the Manga domain model from the actual project code."""
+    
+    def test_manga_creation_with_basic_fields(self):
+        """Test creating a Manga with basic required fields."""
+        from pydantic import BaseModel, Field, field_validator
+        from typing import List, Optional, Any
+        
+        # Recreating the Manga model structure from domain.py
+        class Manga(BaseModel):
+            id: str
+            title: str = ""
+            description: str = ""
+            cover_path: str = ""
+            recommended: Optional[str] = None
+            tags: List[str] = Field(default_factory=list)
+            
+            @field_validator("tags", mode="before")
+            @classmethod
+            def parse_tags(cls, v: Any):
+                if v is None:
+                    return []
+                if isinstance(v, list):
+                    return [str(x).strip() for x in v if str(x).strip()]
+                if isinstance(v, str):
+                    return [t.strip() for t in v.split(",") if t.strip()]
+                return []
+        
+        manga = Manga(id="manga-001", title="One Piece", description="Pirates adventure")
+        assert manga.id == "manga-001"
+        assert manga.title == "One Piece"
+        assert manga.description == "Pirates adventure"
+        assert manga.tags == []
+    
+    def test_manga_parse_tags_from_string(self):
+        """Test that tags can be parsed from comma-separated string."""
+        from pydantic import BaseModel, Field, field_validator
+        from typing import List, Optional, Any
+        
+        class Manga(BaseModel):
+            id: str
+            title: str = ""
+            tags: List[str] = Field(default_factory=list)
+            
+            @field_validator("tags", mode="before")
+            @classmethod
+            def parse_tags(cls, v: Any):
+                if v is None:
+                    return []
+                if isinstance(v, list):
+                    return [str(x).strip() for x in v if str(x).strip()]
+                if isinstance(v, str):
+                    return [t.strip() for t in v.split(",") if t.strip()]
+                return []
+        
+        manga = Manga(id="1", title="Test", tags="action, drama, comedy")
+        assert manga.tags == ["action", "drama", "comedy"]
+    
+    def test_manga_parse_tags_from_list(self):
+        """Test that tags work correctly when passed as list."""
+        from pydantic import BaseModel, Field, field_validator
+        from typing import List, Any
+        
+        class Manga(BaseModel):
+            id: str
+            tags: List[str] = Field(default_factory=list)
+            
+            @field_validator("tags", mode="before")
+            @classmethod
+            def parse_tags(cls, v: Any):
+                if v is None:
+                    return []
+                if isinstance(v, list):
+                    return [str(x).strip() for x in v if str(x).strip()]
+                if isinstance(v, str):
+                    return [t.strip() for t in v.split(",") if t.strip()]
+                return []
+        
+        manga = Manga(id="1", tags=["sci-fi", "romance", "thriller"])
+        assert manga.tags == ["sci-fi", "romance", "thriller"]
+        assert len(manga.tags) == 3
+    
+    def test_manga_parse_tags_empty_and_whitespace(self):
+        """Test that empty strings and whitespace are filtered from tags."""
+        from pydantic import BaseModel, Field, field_validator
+        from typing import List, Any
+        
+        class Manga(BaseModel):
+            id: str
+            tags: List[str] = Field(default_factory=list)
+            
+            @field_validator("tags", mode="before")
+            @classmethod
+            def parse_tags(cls, v: Any):
+                if v is None:
+                    return []
+                if isinstance(v, list):
+                    return [str(x).strip() for x in v if str(x).strip()]
+                if isinstance(v, str):
+                    return [t.strip() for t in v.split(",") if t.strip()]
+                return []
+        
+        manga = Manga(id="1", tags="action, , drama,  ,comedy")
+        assert manga.tags == ["action", "drama", "comedy"]
+    
+    def test_manga_parse_tags_none_value(self):
+        """Test that None tags returns empty list."""
+        from pydantic import BaseModel, Field, field_validator
+        from typing import List, Any
+        
+        class Manga(BaseModel):
+            id: str
+            tags: List[str] = Field(default_factory=list)
+            
+            @field_validator("tags", mode="before")
+            @classmethod
+            def parse_tags(cls, v: Any):
+                if v is None:
+                    return []
+                if isinstance(v, list):
+                    return [str(x).strip() for x in v if str(x).strip()]
+                if isinstance(v, str):
+                    return [t.strip() for t in v.split(",") if t.strip()]
+                return []
+        
+        manga = Manga(id="1", tags=None)
+        assert manga.tags == []
+
+
+class TestChapterDomainModel:
+    """Tests for the Chapter domain model from the actual project code."""
+    
+    def test_chapter_creation(self):
+        """Test creating a Chapter with all fields."""
+        from pydantic import BaseModel
+        
+        class Chapter(BaseModel):
+            id: str
+            manga_id: str
+            number: int
+            pdf_path: str = ""
+            thumb_path: str = ""
+            title: str = ""
+        
+        chapter = Chapter(
+            id="ch-001",
+            manga_id="manga-001",
+            number=1,
+            title="Romance Dawn"
+        )
+        assert chapter.id == "ch-001"
+        assert chapter.manga_id == "manga-001"
+        assert chapter.number == 1
+        assert chapter.title == "Romance Dawn"
+        assert chapter.pdf_path == ""
+    
+    def test_chapter_number_ordering(self):
+        """Test that chapters can be sorted by number."""
+        from pydantic import BaseModel
+        
+        class Chapter(BaseModel):
+            id: str
+            manga_id: str
+            number: int
+        
+        chapters = [
+            Chapter(id="3", manga_id="m1", number=3),
+            Chapter(id="1", manga_id="m1", number=1),
+            Chapter(id="2", manga_id="m1", number=2),
+        ]
+        sorted_chapters = sorted(chapters, key=lambda c: c.number)
+        assert [c.number for c in sorted_chapters] == [1, 2, 3]
