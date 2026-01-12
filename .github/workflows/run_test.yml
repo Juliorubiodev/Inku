@@ -28,18 +28,19 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest httpx
+          pip install pytest httpx pytest-mock
 
       - name: Run Tests
         working-directory: ./backend/${{ matrix.service }}
+        env:
+          FIREBASE_SERVICE_ACCOUNT_PATH: /fake/path.json
+          FIREBASE_WEB_API_KEY: fake-api-key
+          CORS_ORIGINS: http://localhost:3000
+          API_PREFIX: /api
+          SERVICE_NAME: test-service
         run: |
-          export PYTHONPATH=$PYTHONPATH:./src:.
-          # Check if src folder exists, otherwise run from root
-          if [ -d "src" ]; then
-              python -m pytest
-          else
-              python -m pytest
-          fi
+          export PYTHONPATH=$PYTHONPATH:./src:.:../shared
+          python -m pytest tests/ -v --tb=short
 
   frontend-test:
     runs-on: ubuntu-latest
