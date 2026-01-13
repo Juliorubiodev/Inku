@@ -88,7 +88,7 @@ region: frankfurt  # Cumple con GDPR y requisitos legales de la UE
 
 ### 2.1 Stack de Despliegue
 
-![Stack de Despliegue](docs/captures/SSH5/2.png)
+![Stack de Despliegue](../captures/SSH5/2.png)
 
 ### 2.2 Herramientas Utilizadas
 
@@ -322,7 +322,7 @@ jobs:
 
 ### 3.3 Flujo de Despliegue
 
-![Flujo de Despliegue](docs/captures/SSH5/3.png)
+![Flujo de Despliegue](../captures/SSH5/3.png)
 
 ---
 
@@ -364,9 +364,9 @@ Render verifica estos endpoints cada **30 segundos** y reinicia el servicio si f
 
 Render proporciona visualización de logs en tiempo real:
 
-![Logs](docs/captures/SSH5/4.png)
-![Logs](docs/captures/SSH5/5.png)
-![Logs](docs/captures/SSH5/6.png)
+![Logs](../captures/SSH5/4.png)
+![Logs](../captures/SSH5/5.png)
+![Logs](../captures/SSH5/6.png)
 
 ### 4.4 Métricas de Rendimiento
 
@@ -380,8 +380,8 @@ Las métricas disponibles en Render incluyen:
 | **Request Rate** | Requests/min | Variable |
 | **Error Rate** | % de errores | > 5% |
 
-![Métricas](docs/captures/SSH5/metrics.png)
-![Métricas](docs/captures/SSH5/metrics2.png)
+![Métricas](../captures/SSH5/metrics.png)
+![Métricas](../captures/SSH5/metrics2.png)
 
 ---
 
@@ -428,17 +428,17 @@ curl https://inku-list-service.onrender.com/api/lists/public
 
 ### 5.3 Capturas del Funcionamiento
 
-![Frontend](docs/captures/SSH5/home.png)
+![Frontend](../captures/SSH5/home.png)
 
-![Lector](docs/captures/SSH5/lector.png)
+![Lector](../captures/SSH5/lector.png)
 
-![Listas](docs/captures/SSH5/listaspublicas.png)
+![Listas](../captures/SSH5/listaspublicas.png)
 
-![Listas](docs/captures/SSH5/mislistas.png)
+![Listas](../captures/SSH5/mislistas.png)
 
-![Subida](docs/captures/SSH5/subida.png)
+![Subida](../captures/SSH5/subida.png)
 
-![Deploy](docs/captures/SSH5/render.png)
+![Deploy](../captures/SSH5/render.png)
 
 ---
 
@@ -482,7 +482,7 @@ Esto confirma que los servicios entran en estado "dormido" tras ~15 minutos de i
 
 ### 6.3 Prueba de Carga con Script Python
 
-![Latencia](docs/captures/SSH5/latencia.png)
+![Latencia](../captures/SSH5/latencia.png)
 
 ### 6.4 Prueba de Estrés con Locust
 
@@ -490,7 +490,7 @@ Se realizo prueba de estrés con locust para verificar el rendimiento del sistem
 
 Se confirma que hay algunos errores frente a mucho estrés, debido a plan gratuito de render, sin embargo el sistema sigue funcionando correctamente, el usuario puede continuar su actividad normalmente, debido a que las peticiones son manejadas correctamente, al repetirse si fallan.
 
-![Locust](docs/captures/SSH5/locustest.png)
+![Locust](../captures/SSH5/locustest.png)
 
 ### 6.5 Resultados de las Pruebas
 
@@ -519,9 +519,9 @@ Se confirma que hay algunos errores frente a mucho estrés, debido a plan gratui
 
 ### Anexo A:
 
-![Funcionamiento General](docs/captures/SSH5/navegacion.gif)
+![Funcionamiento General](../captures/SSH5/navegacion.gif)
 
-![Subida Colaborativa](docs/captures/SSH5/Upload.gif)
+![Subida Colaborativa](../captures/SSH5/Upload.gif)
 
 
 
