@@ -9,7 +9,6 @@ local.properties
 *.log
 
 # Android Studio generated files and folders
-captures/
 .externalNativeBuild/
 .cxx/
 *.aab

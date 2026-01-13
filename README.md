@@ -287,6 +287,16 @@ npm test
 | [📙 Manual de Despliegue Render](docs/MANUAL_DESPLIEGUE_RENDER.md) | Guía paso a paso |
 | [📕 Manual de Despliegue Local](docs/MANUAL_DESPLIEGUE_LOCAL.md) | Desarrollo local |
 
+
+### Capturas de pantalla
+![GitHub](docs/captures/SSH5/gitproof.png)
+
+![CI/CD](docs/captures/SSH5/testpass.png)
+
+![CI/CD](docs/captures/SSH5/dockerimages.png)
+
+![CI/CD](docs/captures/SSH5/deployrender.png)
+
 ---
 
 ## 🔧 Configuración
